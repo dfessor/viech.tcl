@@ -1,5 +1,5 @@
 # CONFIGURATION SECTION.
-set our_chan {*}
+set our_chan { "##tryingstuffStayout" }
 
 source scripts/viech/viechDB.tcl
 package require sqlite3
@@ -17,6 +17,11 @@ bind pub - !viech viech
 # text - the text the person said (not counting the trigger word)
 
 proc viech {nick uhost hand chan text } {
+	global our_chan
+	if { [lsearch $our_chan $chan ] == -1 } {
+		putserv "privmsg $chan :Sorry, wir bauen gerade das Dojo um. Bitte schreibs dir auf und loggs, wenn wir wieder da sind."
+		return 0
+	}
 	set theWords [regexp -all -inline {\S+} $text]
 	set anzahl [lindex $theWords 0]
 	set uebung [lindex $theWords 1]
@@ -105,3 +110,4 @@ proc viech {nick uhost hand chan text } {
 # TODO Ordnung der Überprüfungen von anzahl und befehl Sortieren
 # TODO Multilang (Antworten aussondern)
 # TODO add sports
+# TODO find a way to whitelist all channels
