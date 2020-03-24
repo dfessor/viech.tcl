@@ -26,7 +26,6 @@ proc dbRead {name givenTime} {
 	append query [timeWindow $givenTime]
 	append query " GROUP BY sport"
 	append query ";"
-	putlog $query
         set out [db eval $query]
         return $out
 }

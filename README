@@ -1,2 +1,9 @@
 # viech.tcl
 Script for eggbot to track exercises
+
+## Changelog
+### v1.0.0.
+- base Version
+
+### v1.0.1.
+- stats can be seen for day/week/month/year/total

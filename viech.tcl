@@ -1,5 +1,7 @@
 # CONFIGURATION SECTION.
-set our_chan { "##tryingstuffStayout" }
+
+# channel names for privacy reasons: A variable called "our_chan" containing a list of channel names
+source scripts/viech/viechChan.tcl
 
 source scripts/viech/viechDB.tcl
 package require sqlite3
