@@ -31,7 +31,7 @@ proc viech {nick uhost hand chan text } {
 		$anzahl == "" } then {
 		putserv "privmsg $chan :$nick !viech-syntax: !viech Anzahl Übung (Abstände nicht vergessen)"
 		putserv "privmsg $chan :$nick Übungen: kz-Klimmzüge, ls-Liegestütz, kb-Kniebeugen"
-		putserv "privmsg $chan :$nick !viech stats zeigt dir deine Statistik."
+		putserv "privmsg $chan :$nick !viech stats total(default)/day/week/month/year zeigt dir deine Statistik."
 		return 0 
 	}
 	if {$anzahl == "register"} {
