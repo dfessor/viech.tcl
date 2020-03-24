@@ -43,10 +43,9 @@ proc viech {nick uhost hand chan text } {
 		return 1
 	}
 	if {$anzahl == "stats"} {
-		# TODO: Let me look at other stats
 		global dbname
 		sqlite3 db $dbname
-		set out [dbRead $uhost]
+		set out [dbRead $uhost $uebung]
 		db close
 		putserv "privmsg $chan :$nick: $out"
 		return 1
@@ -100,7 +99,7 @@ proc viech {nick uhost hand chan text } {
 		putserv "privmsg $chan :$nick hat $theWords gemacht! (registriere dich mit !viech register)"
 		return 1
 	} else {
-		set out [dbRead $uhost]
+		set out [dbRead $uhost "" ]
 		db close
 	}
 	putserv "privmsg $chan :$nick hat $theWords gemacht!"
@@ -111,3 +110,4 @@ proc viech {nick uhost hand chan text } {
 # TODO Multilang (Antworten aussondern)
 # TODO add sports
 # TODO find a way to whitelist all channels
+# TODO best day/week/month/year

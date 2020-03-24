@@ -17,14 +17,31 @@ proc dbWrite {name sport amount} {
         set out [db eval $query]
         return $out
 }
-proc dbRead {name} {
-        if {$name == "all" } {
-                set query "SELECT name, sport, amount FROM viech, names, sports WHERE viech.nameID = names.ID AND viech.sportID = sports.ID;"
+proc dbRead {name givenTime} {
+        if {$name == "all" } { # TODO DEAD
+	set query "SELECT name, sport, amount FROM viech, names, sports WHERE viech.nameID = names.ID AND viech.sportID = sports.ID"
         } else {
-                set query "SELECT sport, sum\(amount\) FROM viech, names, sports WHERE names.name is \"$name\" AND viech.nameID = names.ID AND viech.sportID = sports.ID GROUP BY sport;"
+                set query "SELECT sport, sum\(amount\) FROM viech, names, sports WHERE names.name is \"$name\" AND viech.nameID = names.ID AND viech.sportID = sports.ID"
         }
+	append query [timeWindow $givenTime]
+	append query " GROUP BY sport"
+	append query ";"
+	putlog $query
         set out [db eval $query]
         return $out
+}
+
+proc timeWindow {theTime} {
+	switch $theTime {
+		"day"   { set t %Y-%m-%d }
+		"week"  { set t %Y-%W }
+		"month" { set t %Y-%m }
+		"year"  { set t %Y }
+		"total" { set t "" }
+		default { set t "" }
+	}
+	set out " AND strftime\('$t',timestamp\) IS strftime\('$t','now'\)"
+	return $out
 }
 
 # set query "SELECT name, sport, sum\(amount\) FROM viech, names, sports WHERE names.name LIKE \"%$name%\" AND viech.nameID = names.ID AND viech.sportID = sports.ID GROUP BY sport;"
