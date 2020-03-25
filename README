@@ -5,5 +5,8 @@ Script for eggbot to track exercises
 ### v1.0.0.
 - base Version
 
-### v1.0.1.
-- stats can be seen for day/week/month/year/total
+### v1.0.1
+- *feature*: stats can be seen for day/week/month/year/total
+
+### v1.0.2
+- *feature*: new sport "situps" added

@@ -115,6 +115,5 @@ proc viech {nick uhost hand chan text } {
 
 # TODO Ordnung der Überprüfungen von anzahl und befehl Sortieren
 # TODO Multilang (Antworten aussondern)
-# TODO add sports
 # TODO find a way to whitelist all channels
 # TODO best day/week/month/year
