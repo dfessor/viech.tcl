@@ -1,5 +1,5 @@
 # gitignore
-*.swp # swapfiles
-*~  # backup files
-viech.db # real db-file
-viechChan.tcl # real Channel list
+*.swp 
+*~  
+viech.db 
+viechChan.tcl 
