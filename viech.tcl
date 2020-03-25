@@ -32,7 +32,7 @@ proc viech {nick uhost hand chan text } {
 		$anzahl == "hilfe" ||
 		$anzahl == "" } then {
 		putserv "privmsg $chan :$nick !viech-syntax: !viech Anzahl Übung (Abstände nicht vergessen)"
-		putserv "privmsg $chan :$nick Übungen: kz-Klimmzüge, ls-Liegestütz, kb-Kniebeugen"
+		putserv "privmsg $chan :$nick Übungen: kz-Klimmzüge, ls-Liegestütz, kb-Kniebeugen,su-Situps"
 		putserv "privmsg $chan :$nick !viech stats total(default)/day/week/month/year zeigt dir deine Statistik."
 		return 0 
 	}
@@ -68,6 +68,11 @@ proc viech {nick uhost hand chan text } {
 		"kniebeugen" {
 			lset theWords 1 "Kniebeugen"
 			lset uebung "kniebeugen"
+		}
+		"su" -
+		"situps" {
+			lset theWords 1 "Situps"
+			lset uebung "situps"
 		}
 		default {
 			lset theWords 1 "unbekannte Übungen"
