@@ -67,7 +67,7 @@ proc viech {nick uhost hand chan text } {
 		"stats" {
 			global dbname
 			sqlite3 db $dbname
-			set out [dbRead $uhost ]
+			set out [dbRead $uhost [lindex $theWords 1]]
 			db close
 			if { $out == "" } {
 				putserv "privmsg $chan :$nick nicht registriert. Registriere mit !viech register"
@@ -189,3 +189,4 @@ OUTPUTS:
 # TODO best day/week/month/year
 # TODO test.tcl
 # TODO when user is registered, but didn't log anything yet output for !viech stats is as if not registerd
+# TODO stats day doesn't work
