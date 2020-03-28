@@ -10,7 +10,6 @@ set dbname "scripts/viech/viech.db"
 ## userfile flags -|- everyone
 set tryflags -|- 
 
-bind pub - !viech viech
 
 # nick - the person's nickname
 # uhost - the person's user@host
@@ -149,6 +148,7 @@ proc viech {nick uhost hand chan text } {
 		db close
 	}
 	return 1
+}
 		
 if 0 {
 	# OLD STATS: Doesn't have day/week/month/year implemented yet
