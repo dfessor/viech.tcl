@@ -10,3 +10,6 @@ Script for eggbot to track exercises
 
 ### v1.0.2
 - *feature*: new sport "situps" added
+
+### v1.1.0
+- major rewrite of code
