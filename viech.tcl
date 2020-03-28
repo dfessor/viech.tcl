@@ -17,14 +17,17 @@ set tryflags -|-
 # chan - the channel this event happened on
 # text - the text the person said (not counting the trigger word)
 
-proc sendErrorMsg {} {
+proc sendErrorMsg { nick chan text } {
+	# TODO DOESN'T PRINT
+	putlog ERROR
 	set errorMsg {
-		putserv "privmsg $chan :$nick da kennt sich ja keiner aus mit ($text)"
-		putserv "privmsg $chan :$nick du brauchst !viech hilfe"
+		"privmsg $chan :$nick da kennt sich ja keiner aus mit \($text\)"
+		"privmsg $chan :$nick du brauchst !viech hilfe"
 	}
 	foreach msg $errorMsg {
-		msg
+		putserv $msg
 	}
+	return 1
 }
 
 proc viech {nick uhost hand chan text } {
@@ -70,11 +73,15 @@ proc viech {nick uhost hand chan text } {
 			sqlite3 db $dbname
 			set out [dbRead $uhost ]
 			db close
-			putserv "privmsg $chan :$nick erfolgreich registriert!"
+			putlog $out
+			if { $out == "" } {
+				putserv "privmsg $chan :$nick nicht registriert. Registriere mit !viech register"
+			} else {
+				putserv "privmsg $chan :$nick $out"
+			}
 			return 1
 		}
 		default {
-			sendErrorMsg
 		}
 	}
 	# Try to understand FIRST argument (=reps), assuming user wants to write DB
@@ -83,26 +90,30 @@ proc viech {nick uhost hand chan text } {
 	set negativeNumber 0
 	
 	## find out if exercises are positive or negative
+putlog $fAL
 	switch -glob $fAL {
-		"+" - 0 - 1 - 2 - 3 - 4 - 5 - 6 - 7- 8 - 9 { 
+		"+" - 0 - 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 { 
 			# All good
+			set Rainbowbunnies ON
 		}
 		"-" {
 			set negativeNumber 1
 		}
 		default {
-			sendErrorMsg
+			sendErrorMsg $nick $chan $text
+			return 0
 		}
 	}
 	## Find out how many reps were made
+putlog TEST
 	for {set index 1} {$index < [string length $firstArgument] } {incr index} {
 		switch -glob [string index $firstArgument $index] {
 			0 - 1 - 2 - 3 - 4 - 5 - 6 - 7- 8 - 9 {
 				# All good
-			set reps $firstArgument
+				set reps $firstArgument
 			}
 			default { 
-				sendErrorMsg
+				sendErrorMsg $nick $chan $text
 			}
 		}
 	}
