@@ -101,18 +101,21 @@ proc viech {nick uhost hand chan text } {
 		}
 	}
 	## Find out how many reps were made
-	for {set index 1} {$index < [string length $firstArgument] } {incr index} {
-		switch -glob [string index $firstArgument $index] {
-			0 - 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 {
-				# All good
-				set reps $firstArgument
-			}
-			default { 
-				sendErrorMsg $nick $chan $text
+	if {[string length $firstArgument] > 1 } {
+		for {set index 1} {$index < [string length $firstArgument] } {incr index} {
+			switch -glob [string index $firstArgument $index] {
+				0 - 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 {
+					# All good
+					set reps $firstArgument
+				}
+				default { 
+					sendErrorMsg $nick $chan $text
+				}
 			}
 		}
+	} else {
+		set reps $firstArgument
 	}
-putlog TEST
 
 	# Try to understand SECOND argument (=exercise)
 	set secondArgument [lindex $theWords 1]
@@ -120,28 +123,29 @@ putlog TEST
 		"kz" -
 		"klimmzüge" {
 			lset theWords 1 "Klimmzüge"
-			lset exercise "klimmzuege"
+			set exercise "klimmzuege"
 		}
 		"ls" -
 		"liegestütz" {
 			lset theWords 1 "Liegestütz"
-			lset exercise "liegestuetz"
+			set exercise "liegestuetz"
 		}
 		"kb" -
 		"kniebeugen" {
 			lset theWords 1 "Kniebeugen"
-			lset exercise "kniebeugen"
+			set exercise "kniebeugen"
 		}
 		"su" -
 		"situps" {
 			lset theWords 1 "Situps"
-			lset exercise "situps"
+			set exercise "situps"
 		}
 		default {
 			lset theWords 1 "unbekannte Übungen"
-			lset exercise 0
+			set exercise 0
 		}
 	}
+putlog TEST
 
 	# Writing to DB
 	global dbname
@@ -149,7 +153,7 @@ putlog TEST
 	set out [dbWrite $uhost $exercise $reps]
 
 	## Make output
-	append msg "privmsg $chan : $nick hat $reps $theWords gemacht!"
+	append msg "privmsg $chan : $nick hat $reps $exercise gemacht!"
 	# TODO What is the output, when a user exists vs when he doesn't exist!
 	if {$out == 0} {
 		append msg " (registriere dich mit !viech register)"
