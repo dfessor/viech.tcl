@@ -17,7 +17,7 @@ proc dbWrite {name sport amount} {
         set out [db eval $query]
         return $out
 }
-proc dbRead {name givenTime} {
+proc dbRead {name [ givenTime ""] } {
         if {$name == "all" } { # TODO DEAD
 	set query "SELECT name, sport, amount FROM viech, names, sports WHERE viech.nameID = names.ID AND viech.sportID = sports.ID"
         } else {
