@@ -19,7 +19,6 @@ set tryflags -|-
 
 proc sendErrorMsg { nick chan text } {
 	# TODO DOESN'T PRINT
-	putlog "ERROR $nick $chan $text"
 	append firstMsg "privmsg " $chan " :" $nick " da kennt sich ja keiner aus mit \(" $text "\)"
 	append secondMsg "privmsg " $chan " :" $nick " du brauchst !viech hilfe"
 	putserv $firstMsg
@@ -70,7 +69,6 @@ proc viech {nick uhost hand chan text } {
 			sqlite3 db $dbname
 			set out [dbRead $uhost ]
 			db close
-			putlog $out
 			if { $out == "" } {
 				putserv "privmsg $chan :$nick nicht registriert. Registriere mit !viech register"
 			} else {
@@ -93,7 +91,6 @@ proc viech {nick uhost hand chan text } {
 			set Rainbowbunnies ON
 		}
 		"-" {
-			putserv "privmsg $chan :Aha! Da wollte $nick wohl ein bisserl schummeln! ($text)"
 			set negativeNumber 1
 		}
 		default {
@@ -146,7 +143,6 @@ proc viech {nick uhost hand chan text } {
 			set exercise 0
 		}
 	}
-putlog TEST
 
 	# Writing to DB
 	global dbname
@@ -154,15 +150,18 @@ putlog TEST
 	set out [dbWrite $uhost $exercise $reps]
 
 	## Make output
-	append msg "privmsg $chan : $nick hat $reps $exercise gemacht!"
+	if { $negativeNumber == 1 } {
+			putserv "privmsg $chan :Aha! Da wollte $nick wohl ein bisserl schummeln! ($text)"
+	}
+	append msg "privmsg $chan :$nick hat $reps $exercise gemacht!"
 	# TODO What is the output, when a user exists vs when he doesn't exist!
 	if {$out == 0} {
 		append msg " (registriere dich mit !viech register)"
-		putserv $msg
 	} else {
 		set out [ dbRead $uhost ]
 		db close
 	}
+	putserv $msg
 	return 1
 }
 		
@@ -177,8 +176,6 @@ if 0 {
 		putserv "privmsg $chan :$nick: $out"
 		return 1
 	}
-}
-if 0 {
 OUTPUTS:
 	putserv "privmsg $chan :$nick hat $theWords gemacht!"
 	putserv "privmsg $chan :$nick hat $theWords gemacht! (registriere dich mit !viech register)"
@@ -191,3 +188,4 @@ OUTPUTS:
 # TODO find a way to whitelist all channels
 # TODO best day/week/month/year
 # TODO test.tcl
+# TODO when user is registered, but didn't log anything yet output for !viech stats is as if not registerd
