@@ -69,12 +69,15 @@ proc viech {nick uhost hand chan text } {
 			sqlite3 db $dbname
 			set out [dbRead $uhost [lindex $theWords 1]]
 			db close
-			if { $out == "" } {
+			if { $out == 0 } {
 				putserv "privmsg $chan :$nick nicht registriert. Registriere mit !viech register"
+			} elseif { $out == "" } {
+				putserv "privmsg $chan :$nick hat heut noch nichts gemacht. Faulpelz..."
+				return 1
 			} else {
 				putserv "privmsg $chan :$nick $out"
 			}
-			return 1
+				return 1
 		}
 		default {
 		}
@@ -166,16 +169,6 @@ proc viech {nick uhost hand chan text } {
 }
 		
 if 0 {
-	# OLD STATS: Doesn't have day/week/month/year implemented yet
-	"stats" {
-		# TODO
-		global dbname
-		sqlite3 db $dbname
-		set out [dbRead $uhost $uebung]
-		db close
-		putserv "privmsg $chan :$nick: $out"
-		return 1
-	}
 OUTPUTS:
 	putserv "privmsg $chan :$nick hat $theWords gemacht!"
 	putserv "privmsg $chan :$nick hat $theWords gemacht! (registriere dich mit !viech register)"
