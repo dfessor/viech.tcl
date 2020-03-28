@@ -41,8 +41,12 @@ proc viech {nick uhost hand chan text } {
 	set theInput [regexp -all -inline {\S+} $text]
 
 	# Make input small
-	for {set index 0} {$index < [llength $theInput]} {incr index} {
-		lappend theWords [string tolower [lindex $theInput $index]]
+	if { $theInput == "" } {
+		set theWords ""
+	} else {
+		for {set index 0} {$index < [llength $theInput]} {incr index} {
+			lappend theWords [string tolower [lindex $theInput $index]]
+		}
 	}
 
 	# Check first argument
@@ -138,7 +142,7 @@ proc viech {nick uhost hand chan text } {
 	set out [dbWrite $uhost $exercise $reps]
 
 	## Make output
-	append msg "privmsg $chan : $nick hat $reps $theWords1 gemacht!"
+	append msg "privmsg $chan : $nick hat $reps $theWords gemacht!"
 	# TODO What is the output, when a user exists vs when he doesn't exist!
 	if {$out == 0} {
 		append msg " (registriere dich mit !viech register)"
