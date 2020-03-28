@@ -93,6 +93,7 @@ proc viech {nick uhost hand chan text } {
 			set Rainbowbunnies ON
 		}
 		"-" {
+			putserv "privmsg $chan :Aha! Da wollte $nick wohl ein bisserl schummeln! ($text)"
 			set negativeNumber 1
 		}
 		default {
