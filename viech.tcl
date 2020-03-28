@@ -18,7 +18,7 @@ bind pub - !viech viech
 # chan - the channel this event happened on
 # text - the text the person said (not counting the trigger word)
 
-proc sendErrorMsg {
+proc sendErrorMsg {} {
 	set errorMsg {
 		putserv "privmsg $chan :$nick da kennt sich ja keiner aus mit ($text)"
 		putserv "privmsg $chan :$nick du brauchst !viech hilfe"
@@ -35,7 +35,7 @@ proc viech {nick uhost hand chan text } {
 	# Check if $chan is in $our_chan
 	if { [lsearch $our_chan $chan ] == -1 } {
 		putserv "privmsg $chan :Sorry, wir bauen gerade das Dojo um. Bitte schreibs dir auf und loggs, wenn wir wieder da sind."
-		return 0
+		return 1
 	}
 
 	# Load Input as list
@@ -52,7 +52,7 @@ proc viech {nick uhost hand chan text } {
 			putserv "privmsg $chan :$nick !viech-syntax: !viech Anzahl Übung (Abstände nicht vergessen)"
 			putserv "privmsg $chan :$nick Übungen: kz-Klimmzüge, ls-Liegestütz, kb-Kniebeugen,su-Situps"
 			putserv "privmsg $chan :$nick !viech stats total(default)/day/week/month/year zeigt dir deine Statistik."
-			return 0 
+			return 1 
 		}
 		"register" {
 			global dbname
@@ -144,14 +144,12 @@ proc viech {nick uhost hand chan text } {
 	if {$out == 0} {
 		append msg " (registriere dich mit !viech register)"
 		putserv $msg
-		return 1
-	} 
-	set out [dbRead $uhost "" ]
-	db close
-	putserv $msg
+	} else {
+		set out [ dbRead $uhost ]
+		db close
+	}
 	return 1
 		
-############## END
 if 0 {
 	# OLD STATS: Doesn't have day/week/month/year implemented yet
 	"stats" {
@@ -172,9 +170,8 @@ OUTPUTS:
 	putserv "privmsg $chan :$nick du brauchst !viech hilfe"
 }
 
-############## TODOs
 # TODO Ordnung der Überprüfungen von anzahl und befehl Sortieren
 # TODO Multilang (Antworten aussondern)
 # TODO find a way to whitelist all channels
 # TODO best day/week/month/year
-# TODO Test.tcl
+# TODO test.tcl
