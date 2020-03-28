@@ -19,14 +19,11 @@ set tryflags -|-
 
 proc sendErrorMsg { nick chan text } {
 	# TODO DOESN'T PRINT
-	putlog ERROR
-	set errorMsg {
-		"privmsg $chan :$nick da kennt sich ja keiner aus mit \($text\)"
-		"privmsg $chan :$nick du brauchst !viech hilfe"
-	}
-	foreach msg $errorMsg {
-		putserv $msg
-	}
+	putlog "ERROR $nick $chan $text"
+	append firstMsg "privmsg " $chan " :" $nick " da kennt sich ja keiner aus mit \(" $text "\)"
+	append secondMsg "privmsg " $chan " :" $nick " du brauchst !viech hilfe"
+	putserv $firstMsg
+	putserv $secondMsg
 	return 1
 }
 
@@ -90,7 +87,6 @@ proc viech {nick uhost hand chan text } {
 	set negativeNumber 0
 	
 	## find out if exercises are positive or negative
-putlog $fAL
 	switch -glob $fAL {
 		"+" - 0 - 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 { 
 			# All good
