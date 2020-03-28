@@ -101,10 +101,9 @@ proc viech {nick uhost hand chan text } {
 		}
 	}
 	## Find out how many reps were made
-putlog TEST
 	for {set index 1} {$index < [string length $firstArgument] } {incr index} {
 		switch -glob [string index $firstArgument $index] {
-			0 - 1 - 2 - 3 - 4 - 5 - 6 - 7- 8 - 9 {
+			0 - 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 {
 				# All good
 				set reps $firstArgument
 			}
@@ -113,6 +112,7 @@ putlog TEST
 			}
 		}
 	}
+putlog TEST
 
 	# Try to understand SECOND argument (=exercise)
 	set secondArgument [lindex $theWords 1]
